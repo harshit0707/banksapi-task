@@ -1,5 +1,7 @@
 # banksapi-task
 
+Took almost 7 hours to finish.
+
 Make sure you have node.js installed.
 
 Follow the below steps to run the project -
