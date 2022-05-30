@@ -1,0 +1,137 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      BANKSapi Transfer Task
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="errorMessage">
+  {{errorMessage}}
+</ion-content>
+
+<ion-content [fullscreen]="true" *ngIf="contentReady && !errorMessage">
+  <div id="container">
+    <ion-searchbar showCancelButton="never" placeholder="Filter by account holder or note" (ionClear)="clearFilter()"
+      (ionChange)="updateFilter($event)">
+    </ion-searchbar>
+
+    <ion-item>
+      <ion-label>Sort by</ion-label>
+      <ion-select [(ngModel)]="sortValue" (ionChange)="sort()">
+        <ion-select-option value="">None</ion-select-option>
+        <ion-select-option value="DateDescending">Date (Descending))</ion-select-option>
+        <ion-select-option value="DateAscending">Date (Ascending)</ion-select-option>
+        <ion-select-option value="AmountDescending">Amount (Descending)</ion-select-option>
+        <ion-select-option value="AmountAscending">Amount (Ascending)</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <br />
+
+    <table>
+      <tr>
+        <th>Account Holder's name</th>
+        <th>IBAN</th>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Note</th>
+        <th></th>
+      </tr>
+      <tr *ngFor="let data of tableData;">
+        <td>
+          <p *ngIf="data.id !== editId; else editAccountName">{{data.accountName}}</p>
+          <ng-template #editAccountName>
+            <ng-container *ngTemplateOutlet="accountNameInput"></ng-container>
+          </ng-template>
+        </td>
+        <td>
+          <p *ngIf="data.id !== editId; else editIban">{{data.iban | ibanFormatter}}</p>
+          <ng-template #editIban>
+            <ng-container *ngTemplateOutlet="ibanInput"></ng-container>
+          </ng-template>
+        </td>
+        <td>
+          <p *ngIf="data.id !== editId; else editDate">{{data.date}}</p>
+          <ng-template #editDate>
+            <ng-container *ngTemplateOutlet="dateInput"></ng-container>
+          </ng-template>
+        </td>
+        <td>
+          <p *ngIf="data.id !== editId; else editAmount">{{data.amount}} €</p>
+          <ng-template #editAmount>
+            <ng-container *ngTemplateOutlet="amountInput"></ng-container>
+          </ng-template>
+        </td>
+        <td>
+          <p *ngIf="data.id !== editId; else editNote">{{data.note}}</p>
+          <ng-template #editNote>
+            <ng-container *ngTemplateOutlet="noteInput"></ng-container>
+          </ng-template>
+        </td>
+        <td>
+          <ion-button *ngIf="data.id !== editId && !addSession" color="light" (click)="editEntry(data)">Edit</ion-button>
+          <ion-button *ngIf="data.id === editId" color="primary" (click)="saveEdit()">Save</ion-button>
+          <ion-button *ngIf="data.id === editId" color="light" (click)="cancelEdit()">Cancel</ion-button>
+          <ion-button *ngIf="data.id !== editId" color="danger" (click)="deleteEntry(data.id)">Delete</ion-button>
+        </td>
+      </tr>
+      <ng-container *ngIf="addSession">
+        <tr>
+          <td>
+            <ng-container *ngTemplateOutlet="accountNameInput"></ng-container>
+          </td>
+          <td>
+            <ng-container *ngTemplateOutlet="ibanInput"></ng-container>
+          </td>
+          <td>
+            <ng-container *ngTemplateOutlet="dateInput"></ng-container>
+          </td>
+          <td>
+            <ng-container *ngTemplateOutlet="amountInput"></ng-container>
+          </td>
+          <td>
+            <ng-container *ngTemplateOutlet="noteInput"></ng-container>
+          </td>
+          <td>
+            <ion-button color="primary" (click)="add()">Save</ion-button>
+            <ion-button color="light" (click)="cancelAdd()">Cancel</ion-button>
+          </td>
+        </tr>
+      </ng-container>
+    </table>
+
+    <br />
+
+    <form [formGroup]="transferForm">
+      <ng-template #accountNameInput>
+        <input type="text" formControlName="accountName">
+        <ion-text color="danger">{{getErrorMessage('accountName')}}</ion-text>
+      </ng-template>
+      
+      <ng-template #ibanInput>
+        <input type="text" formControlName="iban">
+        <ion-text color="danger">{{getErrorMessage('iban')}}</ion-text>
+      </ng-template>
+      
+      <ng-template #dateInput>
+        <input type="date" formControlName="date" [min]=getMinDate()>
+        <ion-text color="danger">{{getErrorMessage('date')}}</ion-text>
+      </ng-template>
+      
+      <ng-template #amountInput>
+        <input type="text" formControlName="amount">
+        <ion-text color="danger">{{getErrorMessage('amount')}}</ion-text>
+      </ng-template>
+
+      <ng-template #noteInput>
+        <input type="text" formControlName="note">
+        <ion-text color="danger">{{getErrorMessage('note')}}</ion-text>
+      </ng-template>
+
+      <ion-button *ngIf="!addSession && !editSession" color="primary" (click)="addEntry()">
+        Add transfer
+      </ion-button>
+    </form>
+  </div>
+</ion-content>

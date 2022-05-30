@@ -1,0 +1,42 @@
+[
+    {
+      "id": "gbyreuholjdnfkvxc",
+      "accountName": "Ruth Simon",
+      "iban": "DE10500105178278265195",
+      "date": "25.05.2022",
+      "amount": "100",
+      "note": "This is the first test entry"
+    },
+    {
+        "id": "ruenpiohngoefkdls",
+        "accountName": "Arthur Albert",
+        "iban": "DE27500105172711396865",
+        "date": "24.05.2022",
+        "amount": "1.000",
+        "note": "Decided to another one"
+    },
+    {
+        "id": "ngrepignpqegredf",
+        "accountName": "Silke König",
+        "iban": "DE67500105172797511872",
+        "date": "26.05.2025",
+        "amount": "10",
+        "note": "And another one"
+    },
+    {
+        "id": "ngrueipjdgfnepirlkfd",
+        "accountName": "Hilmar Heinrich",
+        "iban": "DE92500105177856852748",
+        "date": "30.05.2022",
+        "amount": "100",
+        "note": "Still not enough!"
+    },
+    {
+        "id": "nrfjipdgnkgrefd",
+        "accountName": "Arne Schuhart",
+        "iban": "DE44500105178472123739",
+        "date": "01.01.2021",
+        "amount": "1,11",
+        "note": "Ok, this is the last one"
+    }
+]
